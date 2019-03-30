@@ -1,5 +1,6 @@
 # Copyright Jonathan Hartley 2013. BSD 3-Clause license, see LICENSE file.
 from . import win32
+import sys
 
 
 # from wincon.h
@@ -23,7 +24,8 @@ class WinStyle(object):
 class WinTerm(object):
 
     def __init__(self):
-        self._default = win32.GetConsoleScreenBufferInfo(win32.STDOUT).wAttributes
+        out = win32.STDOUT if sys.stdout.isatty() else win32.STDERR
+        self._default = win32.GetConsoleScreenBufferInfo(out).wAttributes
         self.set_attrs(self._default)
         self._default_fore = self._fore
         self._default_back = self._back
